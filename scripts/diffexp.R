@@ -25,8 +25,8 @@ if(!is.null(constrain_celltypes)) {
         if(!(common_var %in% colnames(colData(sce)))) {
             stop(paste("covariate", common_var, "not found in cell metadata"))
         }
-        common_by_celltype <- lapply(unique(colData(sce)$celltype), function(x) unique(as.character(colData(sce)[colData(sce)$celltype==x, common_var])))
-	common_in_all <- names(table(unlist(common_by_celltype)) == length(common_by_celltype))
+        is_common_in_all <- apply(table(colData(sce)[, c(common_var, "celltype")]) > 0, 1, all)
+	common_in_all <- names(is_common_in_all)[common_in_all]
 	sce <- sce[, colData(sce)[, common_var] %in% common_in_all]
     }
 }
