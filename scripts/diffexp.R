@@ -5,6 +5,7 @@ sink(log, type="message")
 library(SingleCellExperiment)
 library(scran)
 library(edgeR)
+library(dplyr)
 
 sce <- readRDS(snakemake@input[["sce"]])
 for(cellassign_fit in snakemake@input[["cellassign_fits"]]) {
@@ -12,10 +13,27 @@ for(cellassign_fit in snakemake@input[["cellassign_fits"]]) {
     # assign determined cell types
     colData(sce)[rownames(cellassign_fit), "celltype"] <- sapply(cellassign_fit$cell_type, as.character)
 }
-# only keep the requested cells
-sce <- sce[, colData(sce)$celltype %in% snakemake@params[["celltypes"]]]
+# handle constrain celltypes
+constrain_celltypes <- snakemake@params[["constrain_celltypes"]]
+if(!is.null(constrain_celltypes)) {
+    celltypes <- constrain_celltypes[["celltypes"]]
+    common_var <- constrain_celltypes[["common"]]
+
+    sce <- sce[, colData(sce)$celltype %in% snakemake@params[["celltypes"]]]
+
+    if(!is.null(common_var)) {
+        if(!(common_var %in% colnames(colData(sce)))) {
+            stop(paste("covariate", common_var, "not found in cell metadata"))
+        }
+        common_by_celltype <- lapply(unique(colData(sce)$celltype), function(x) unique(as.character(colData(sce)[colData(sce)$celltype==x, common_var])))
+	common_in_all <- names(table(unlist(common_by_celltype)) == length(common_by_celltype))
+	sce <- sce[, colData(sce)[, common_var] %in% common_in_all]
+    }
+}
+
 colData(sce)$celltype <- factor(colData(sce)$celltype)
 colData(sce)$detection_rate <- cut(colData(sce)$detection_rate, 10)
+
 
 # convert to edgeR input
 y <- convertTo(sce, type = "edgeR", col.fields = colnames(colData(sce)))

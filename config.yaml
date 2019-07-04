@@ -39,7 +39,7 @@ diffexp:
     # In addition, you can use celltype and detection_rate
     # (number of expressed genes in cell divided by total 
     # number of genes in experiment).
-    design: "~ celltype + G1 + G2M + cohort + treatment_group + detection_rate"
+    design: "~ celltype + sample + G1 + G2M + cohort + treatment_group + detection_rate"
     # Which coefficients of the model should be tested equal to zero.
     # E.g., 2 to test the first coefficient after the implicit intercept
     # (i.e., celltype in the example above).
@@ -47,9 +47,17 @@ diffexp:
     # False discovery rate to control for.
     fdr: 0.05
     # Optional: constrain to cell types (comment out to use all cell types).
-    celltypes:
-      - IFNy+
-      - IFNy-
+    constrain-celltypes:
+      celltypes:
+        - IFNy+
+        - IFNy-
+      # Optional: constrain cells to those with the given covariate occurring in all celltypes 
+      # (comment out if not needed).
+      # This can be used to avoid confounding of an important batch variable.
+      # E.g., if you want the differential expression across cell types, and sample is a 
+      # batch variable to control for, you need to ensure that each sample contains all
+      # considered cell types.
+      common: sample
 
 species: human
 

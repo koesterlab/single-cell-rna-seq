@@ -20,7 +20,7 @@ rule edger:
         "logs/edger/{test}.log"
     params:
         design=lambda w: config["diffexp"][w.test]["design"],
-        celltypes=lambda w: config["diffexp"][w.test]["celltypes"],
+        constrain_celltypes=lambda w: config["diffexp"][w.test].get("constrain-celltypes", None),
         coef=lambda w: config["diffexp"][w.test]["coef"],
         fdr=lambda w: config["diffexp"][w.test]["fdr"]
     conda:
