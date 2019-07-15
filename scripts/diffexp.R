@@ -19,15 +19,16 @@ if(!is.null(constrain_celltypes)) {
     celltypes <- constrain_celltypes[["celltypes"]]
     common_var <- constrain_celltypes[["common"]]
 
-    sce <- sce[, colData(sce)$celltype %in% snakemake@params[["celltypes"]]]
+    sce <- sce[, colData(sce)$celltype %in% celltypes]
 
     if(!is.null(common_var)) {
         if(!(common_var %in% colnames(colData(sce)))) {
             stop(paste("covariate", common_var, "not found in cell metadata"))
         }
         is_common_in_all <- apply(table(colData(sce)[, c(common_var, "celltype")]) > 0, 1, all)
-	common_in_all <- names(is_common_in_all)[common_in_all]
+	common_in_all <- names(is_common_in_all)[is_common_in_all]
 	sce <- sce[, colData(sce)[, common_var] %in% common_in_all]
+        colData(sce) <- droplevels(colData(sce))
     }
 }
 
