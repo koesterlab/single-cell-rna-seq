@@ -70,7 +70,6 @@ model <- model[colnames(sce), colnames(model) != "(Intercept)"]
 # normalize float columns (as recommended in cellassign manual)
 float_cols <- apply(model, 2, is.float)
 model[, float_cols] <- apply(model[, float_cols], 2, scale)
-print(head(model))
 # fit
 fit <- cellassign(exprs_obj = sce, marker_gene_info = marker_mat, s = sizeFactors(sce), learning_rate = 1e-2, B = 20, shrinkage = TRUE, X = model)
 
@@ -82,13 +81,14 @@ rownames(fit$cell_type) <- cells
 
 saveRDS(fit, file = snakemake@output[["fit"]])
 
+save.image()
 # plot heatmap
 source(file.path(snakemake@scriptdir, "common.R"))
-sce <- assign_celltypes(fit, sce)
+sce <- assign_celltypes(fit, sce, snakemake@params[["min_gamma"]])
 
 pdf(file = snakemake@output[["heatmap"]])
 pal <- pal_d3("category20")(ncol(marker_mat))
 names(pal) <- colnames(marker_mat)
 celltype <- HeatmapAnnotation(df = data.frame(celltype = colData(sce)$celltype), col = list(celltype = pal))
-Heatmap(logcounts(sce), col = viridis(100), clustering_distance_rows = "canberra", use_raster = TRUE, show_row_dend = FALSE, show_column_dend = FALSE, show_column_names = FALSE, top_annotation = celltype, name = "logcounts")
+Heatmap(logcounts(sce), col = viridis(100), clustering_distance_columns = "canberra", clustering_distance_rows = "canberra", use_raster = TRUE, show_row_dend = FALSE, show_column_dend = FALSE, show_column_names = FALSE, top_annotation = celltype, name = "logcounts")
 dev.off()

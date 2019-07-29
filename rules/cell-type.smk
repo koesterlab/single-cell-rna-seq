@@ -13,8 +13,10 @@ rule cellassign:
         fit=get_parent_fit,
         design_matrix="analysis/design-matrix.rds"
     output:
-        fit=protected("analysis/cellassign.{parent}.rds"),
+        fit="analysis/cellassign.{parent}.rds",
         heatmap=report("plots/celltype-markers.{parent}.pdf", caption="../report/celltype-markers.rst", category="Cell Type Classification")
+    params:
+        min_gamma=config["celltype"]["min_gamma"]
     log:
         "logs/cellassign/{parent}.log"
     conda:
@@ -46,6 +48,8 @@ rule celltype_tsne:
         report("plots/celltype-tsne.seed={seed}.pdf",
                    caption="../report/celltype-tsne.rst",
                    category="Dimension Reduction")
+    params:
+        min_gamma=config["celltype"]["min_gamma"]
     log:
         "logs/celltype-tsne/seed={seed}.log"
     conda:

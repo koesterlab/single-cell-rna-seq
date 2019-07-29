@@ -32,6 +32,10 @@ model:
 # Comment in to assign cell type via signatures
 celltype: 
   markers: resources/markers.tsv
+  # Minimum gamma score for assigned cell type (resembles a posterior) to be
+  # considered as correctly assigned. Cells where the certainty of cellassign
+  # does not pass this threshold will show as celltype=NA.
+  min_gamma: 0.9
 
 diffexp:
   IFNy+-vs-IFNy-:
@@ -58,6 +62,31 @@ diffexp:
       # batch variable to control for, you need to ensure that each sample contains all
       # considered cell types.
       common: sample
+    genes_of_interest:
+      - MITF
+      - TYRO3
+      - TYRP1
+      - PMEL
+      - MLANA
+      - MYC
+      - CDK2
+      - STAT1
+      - IRF1
+        #- CD274
+      - IDO1
+      - CD74
+      - GBP1
+      - CIITA
+      - ATF3
+      - ATF4
+      - DDIT3
+      - ASNS
+      - TRIB3
+      - SLC1A4
+      - SLC1A5
+
+
+
 
 species: human
 

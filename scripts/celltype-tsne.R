@@ -18,7 +18,7 @@ sce <- readRDS(snakemake@input[["sce"]])
 
 for(cellassign_fit in snakemake@input[["fits"]]) {
     cellassign_fit <- readRDS(cellassign_fit)
-    sce <- assign_celltypes(cellassign_fit, sce)
+    sce <- assign_celltypes(cellassign_fit, sce, snakemake@params[["min_gamma"]])
 }
 
 style <- theme(

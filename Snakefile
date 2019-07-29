@@ -55,7 +55,9 @@ rule all:
                 "plots/diffexp.{test}.bcv.pdf",
                 "plots/diffexp.{test}.md.pdf",
                 "plots/diffexp.{test}.disp.pdf"],
-               test=config["diffexp"])
+               test=config["diffexp"]),
+        [expand("plots/expression/{gene}.{test}.expression.pdf", test=name, gene=test["genes_of_interest"])
+         for name, test in config["diffexp"].items()]
 
 
 rule all_qc:

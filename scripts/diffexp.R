@@ -2,16 +2,18 @@ log <- file(snakemake@log[[1]], open="wt")
 sink(log)
 sink(log, type="message")
 
+library(tidyverse)
 library(SingleCellExperiment)
 library(scran)
 library(edgeR)
 library(dplyr)
 
+source(file.path(snakemake@scriptdir, "common.R"))
+
 sce <- readRDS(snakemake@input[["sce"]])
 for(cellassign_fit in snakemake@input[["cellassign_fits"]]) {
-    cellassign_fit <- readRDS(cellassign_fit)$cell_type
-    # assign determined cell types
-    colData(sce)[rownames(cellassign_fit), "celltype"] <- sapply(cellassign_fit$cell_type, as.character)
+    cellassign_fit <- readRDS(cellassign_fit)
+    sce <- assign_celltypes(cellassign_fit, sce, snakemake@params[["min_gamma"]])
 }
 # handle constrain celltypes
 constrain_celltypes <- snakemake@params[["constrain_celltypes"]]
@@ -47,7 +49,9 @@ y <- estimateDisp(y, design)
 fit <- glmQLFit(y, design)
 qlf <- glmQLFTest(fit, coef = snakemake@params[["coef"]])
 
-write.table(topTags(qlf, n = 10000, p.value = snakemake@params[["fdr"]]), file = snakemake@output[["table"]], sep = "\t", col.names = NA, row.names = TRUE)
+saveRDS(y, file = snakemake@output[["edger_dge"]])
+
+write_tsv(rownames_to_column(topTags(qlf, n = 100000)$table, var = "gene"), snakemake@output[["table"]])
 
 pdf(file = snakemake@output[["bcv"]])
 plotBCV(y)
