@@ -45,7 +45,7 @@ for(g in markers$genes) {
 }
 genes <- sort(unique(genes))
 
-if(length(genes) < 2) {
+if(length(genes) < 1) {
     stop("Markers have to contain at least two different genes in union.")
 }
 
@@ -57,7 +57,7 @@ for(i in 1:nrow(markers)) {
     marker_mat[cell_type, ] <- genes %in% get_genes(markers[i, "genes"])
 }
 marker_mat <- t(marker_mat)
-marker_mat <- marker_mat[rownames(marker_mat) %in% rownames(sce), ]
+marker_mat <- marker_mat[rownames(marker_mat) %in% rownames(sce),, drop=FALSE]
 
 # apply cellAssign
 sce <- sce[rownames(marker_mat), ]

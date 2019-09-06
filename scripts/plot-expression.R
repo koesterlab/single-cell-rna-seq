@@ -17,7 +17,10 @@ log_cpm <- log_cpm %>% mutate(condition = as.factor(y$design[, coef]))
 
 diffexp <- diffexp %>% filter(gene == gene_of_interest)
 
+fmt_float <- function(x) {
+    formatC(x, digits=2, format="g")
+}
 coef_name <- colnames(y$design)[coef]
 pdf(file = snakemake@output[[1]])
-ggplot(log_cpm, aes(x = condition, y = cpm, fill = condition)) + geom_violin() + geom_jitter(alpha = 0.5, size = 1) + labs(fill = coef_name, title = gene_of_interest, subtitle = paste("p =", diffexp$PValue, ", log2fc =", diffexp$logFC)) + theme_classic()
+ggplot(log_cpm, aes(x = condition, y = cpm, fill = condition)) + geom_violin() + geom_jitter(alpha = 0.5, size = 1) + labs(fill = coef_name, title = gene_of_interest, subtitle = paste("p =", fmt_float(diffexp$PValue), ", FDR =",  fmt_float(diffexp$FDR), ", log2fc =", fmt_float(diffexp$logFC))) + theme_classic()
 dev.off()
