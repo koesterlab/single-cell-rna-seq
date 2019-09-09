@@ -36,6 +36,32 @@ celltype:
   # considered as correctly assigned. Cells where the certainty of cellassign
   # does not pass this threshold will show as celltype=NA.
   min_gamma: 0.9
+  expression-plot-genes:
+    - GBP1
+    - STAT1
+    - IRF1
+    - IDO1
+      #- CD274
+    - TAP1
+    - CIITA
+    - HLA-DRA
+
+pairwise-regression:
+  all-malignant:
+    pairs:
+      x: DDX58
+      y:
+        - IRF1
+          #- HLA-B
+          #- HLA-C
+        - B2M
+        - TAP1
+        - TAP2
+          #- LMP2
+        - CCL5
+        - CXCL10
+    constrain-celltypes:
+      - Malignant
 
 diffexp:
   IFNy+-vs-IFNy-:

@@ -58,3 +58,21 @@ rule celltype_tsne:
         seed="[0-9]+"
     script:
         "../scripts/celltype-tsne.R"
+
+
+rule plot_celltype_expressions:
+    input:
+        sce="analysis/normalized.batch-removed.rds",
+        fit="analysis/cellassign.{parent}.rds"
+    output:
+        "plots/celltype-expressions.{parent}.pdf"
+    params:
+        min_gamma=config["celltype"]["min_gamma"],
+        genes=config["celltype"]["expression-plot-genes"],
+        feature="celltype"
+    log:
+        "logs/plot-celltype-expressions/{parent}.log"
+    conda:
+        "../envs/eval.yaml"
+    script:
+        "../scripts/plot-gene-expression.R"

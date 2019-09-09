@@ -42,4 +42,4 @@ rule plot_expression:
     conda:
         "../envs/edger.yaml"
     script:
-        "../scripts/plot-expression.R"
+        "../scripts/plot-differential-expression.R"

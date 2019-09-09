@@ -57,7 +57,12 @@ rule all:
                 "plots/diffexp.{test}.disp.pdf"],
                test=config["diffexp"]),
         [expand("plots/expression/{gene}.{test}.expression.pdf", test=name, gene=test["genes_of_interest"])
-         for name, test in config["diffexp"].items()]
+         for name, test in config["diffexp"].items()],
+        expand("plots/celltype-expressions.{parent}.pdf", parent=markers["parent"].unique()),
+        [expand("plots/gene-vs-gene/{x}-vs-{y}.{regression}.regression.pdf", 
+                x=entry["pairs"]["x"], y=y, regression=regression)
+         for regression, entry in config["pairwise-regression"].items()
+         for y in entry["pairs"]["y"]]
 
 
 rule all_qc:
@@ -87,3 +92,4 @@ include: "rules/normalization.smk"
 include: "rules/variance.smk"
 include: "rules/cell-type.smk"
 include: "rules/diffexp.smk"
+include: "rules/regression.smk"
