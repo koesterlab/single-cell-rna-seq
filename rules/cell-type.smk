@@ -65,7 +65,7 @@ rule plot_celltype_expressions:
         sce="analysis/normalized.batch-removed.rds",
         fit="analysis/cellassign.{parent}.rds"
     output:
-        "plots/celltype-expressions.{parent}.pdf"
+        report("plots/celltype-expressions.{parent}.pdf", caption="../report/celltype-expressions.rst", category="Cell Type Classification")
     params:
         min_gamma=config["celltype"]["min_gamma"],
         genes=config["celltype"]["expression-plot-genes"],

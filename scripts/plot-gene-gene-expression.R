@@ -37,7 +37,7 @@ if(!is.null(constrain_celltypes)) {
 # plot t-SNE
 pdf(file=snakemake@output[[1]], width = 4, height = 4)
 data <- as.data.frame(t(logcounts(sce[c(gene_a, gene_b), ])))
-data <- data[apply(data, 1, min) > 0, ]
+data <- data[apply(data, 1, min) >= 0, ]
 formula <- as.formula(snakemake@params[["formula"]])
 ggplot(data, aes_string(x=aes_name(gene_a), y=aes_name(gene_b))) +
     geom_point(shape=1) +

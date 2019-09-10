@@ -16,7 +16,7 @@ seed <- as.integer(snakemake@wildcards[["seed"]])
 
 sce <- readRDS(snakemake@input[["sce"]])
 
-cellassign_fit <- snakemake@input[["fits"]]
+cellassign_fit <- snakemake@input[["fit"]]
 cellassign_fit <- readRDS(cellassign_fit)
 sce <- assign_celltypes(cellassign_fit, sce, snakemake@params[["min_gamma"]])
 

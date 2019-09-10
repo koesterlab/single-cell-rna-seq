@@ -45,6 +45,13 @@ celltype:
     - TAP1
     - CIITA
     - HLA-DRA
+    - CDK2
+    - MIA
+    - SOX10
+    - CSPG4
+    - MITF
+    - PMEL
+    - TYR
 
 pairwise-regression:
   all-malignant:
