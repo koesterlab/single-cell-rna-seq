@@ -14,3 +14,4 @@ dependencies:
   - bioconductor-biomart =2.38
   - r-ggsci =2.9
   - r-base =3.5.1
+  - r-ggpubr =0.2.3

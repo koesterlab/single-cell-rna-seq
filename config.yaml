@@ -48,18 +48,42 @@ celltype:
 
 pairwise-regression:
   all-malignant:
+    formula: "y ~ x"
     pairs:
       x: DDX58
       y:
         - IRF1
-          #- HLA-B
-          #- HLA-C
-        - B2M
-        - TAP1
-        - TAP2
           #- LMP2
         - CCL5
         - CXCL10
+        # differentiation
+        - MITF
+        - MLANA
+        - PMEL
+        - TYR
+        - TYRP1
+        - DCT
+        - CDK2
+        # stress response
+        - ATF3
+        - ATF4
+        - ASNS
+        - DDIT3
+        - TRIB3
+        - PSAT1
+          # - CHAC1 (not expressed)
+        - NUPR1
+        - HSPA5
+        # antigen presentation
+        - HLA-A
+          # - HLA-B
+          # - HLA-C
+        - TAP1
+        - TAP2
+        - B2M
+        - HLA-DPB1
+        - HLA-DPA1
+        - CD74
     constrain-celltypes:
       - Malignant
 
