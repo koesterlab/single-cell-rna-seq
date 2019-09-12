@@ -6,6 +6,7 @@ sink(log)
 sink(log, type="message")
 
 library(SingleCellExperiment)
+library(tensorflow)
 library(cellassign)
 library(ComplexHeatmap)
 library(viridis)

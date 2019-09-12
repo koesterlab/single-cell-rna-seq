@@ -53,9 +53,12 @@ celltype:
     - PMEL
     - TYR
 
-pairwise-regression:
+gene-vs-gene-plots:
   all-malignant:
-    formula: "y ~ x"
+    # uncomment below to perform a correlation of given type (pearson, spearman, ...)
+    correlation: pearson
+    # uncomment below to perform a regression with given formula
+    # regression: "y ~ x"
     pairs:
       x: DDX58
       y:
