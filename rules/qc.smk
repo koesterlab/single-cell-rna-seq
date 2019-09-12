@@ -66,8 +66,8 @@ rule gene_vs_gene:
         fits=get_gene_vs_gene_fits
     output:
         report("plots/gene-vs-gene/{gene_a}-vs-{gene_b}.{settings}.expressions.pdf",
-                   caption="../report/pairwise-regression.rst",
-                   category="Pairwise Regressions")
+                   caption="../report/gene-vs-gene-plot.rst",
+                   category="Gene vs Gene Comparisons")
     params:
         min_gamma=config["celltype"]["min_gamma"],
         constrain_celltypes=get_constrain_celltypes,
