@@ -28,6 +28,11 @@ model:
   show-n: 20
   # compute correlation for top n HVGs
   top-n: 200
+  # Expressions below this logcount are considered as dropouts 
+  # logcounts are log2 transformed, including 1 pseudocount, normalized, 
+  # and batch effect corrected).
+  # This is currently only used for gene-vs-gene plots (see below).
+  dropout-threshold: 1
 
 # Comment in to assign cell type via signatures
 celltype: 
@@ -94,6 +99,9 @@ gene-vs-gene-plots:
         - HLA-DPB1
         - HLA-DPA1
         - CD74
+        - TAPBP
+        - PSMB9
+        - PSMB8
     constrain-celltypes:
       - Malignant
 

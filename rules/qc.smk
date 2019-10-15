@@ -72,7 +72,8 @@ rule gene_vs_gene:
         min_gamma=config["celltype"]["min_gamma"],
         constrain_celltypes=get_constrain_celltypes,
         regression=lambda w: get_gene_vs_gene_config(w).get("regression", False),
-        correlation=lambda w: get_gene_vs_gene_config(w).get("correlation", False)
+        correlation=lambda w: get_gene_vs_gene_config(w).get("correlation", False),
+        dropout_threshold=config["model"]["dropout-threshold"]
     log:
         "logs/gene-vs-gene/{gene_a}-vs-{gene_b}.{settings}.log"
     conda:

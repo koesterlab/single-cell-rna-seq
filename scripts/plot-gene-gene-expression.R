@@ -34,27 +34,32 @@ if(!is.null(constrain_celltypes)) {
     sce <- sce[, colData(sce)$celltype %in% celltypes]
 }
 
-# plot t-SNE
 pdf(file=snakemake@output[[1]], width = 4, height = 4)
 data <- as.data.frame(t(logcounts(sce[c(gene_a, gene_b), ])))
-data <- data[apply(data, 1, min) >= 0, ]
+vmin <- min(data)
+vmax <- max(data)
 
 regression <- snakemake@params[["regression"]]
 correlation <- snakemake@params[["correlation"]]
+dropout_threshold <- snakemake@params[["dropout_threshold"]]
 
-p <- ggplot(data, aes_string(x=aes_name(gene_a), y=aes_name(gene_b))) +
-    geom_point(shape=1) +
-    geom_smooth(method="lm", formula = formula) +
-    theme_classic()
+data[, "dropout"] <- apply(data, 1, min) < dropout_threshold
+non_dropout_data <- data[!data$dropout, ]
+
+p <- ggplot(data, aes_string(x=aes_name(gene_a), y=aes_name(gene_b), color=aes_name("dropout"))) +
+    geom_point(shape=1) + 
+    scale_color_manual(values = c("#000000", "#666666")) +
+    theme_classic() + 
+    theme(legend.position = "none")
 
 if(regression != FALSE) {
     regression <- as.formula(regression)
-    p = p + geom_smooth(method="lm", formula = formula) +
-	    stat_regline_equation(label.x.npc = "left", label.y.npc = "top", formula = formula,
+    p = p + geom_smooth(method="lm", color = "red", formula = formula, data = non_dropout_data) +
+	    stat_regline_equation(data = non_dropout_data, label.x.npc = "left", label.y.npc = "top", formula = formula,
 				  aes(label = paste(..eq.label.., ..rr.label.., ..adj.rr.label.., sep = "~~~~")))
 }
 if(correlation != FALSE) {
-    p = p + stat_cor(method = correlation) + geom_smooth(method="lm")
+    p = p + stat_cor(method = correlation, data = non_dropout_data) + geom_smooth(method="lm", data = non_dropout_data, color = "red")
 }
 
 # pass plot to PDF
