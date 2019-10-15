@@ -5,5 +5,5 @@ Macrophage		CD14, CD163, CSF1R
 Endothelial-cell		PECAM1, VWF, CDH5
 Fibroblast/myofibroblast		FAP, THY1, DCN, COL1A1, COL1A2, COL6A1, COL6A2, COL6A3
 Malignant		CDK2, MIA, SOX10, CSPG4, MITF, PMEL, TYR
-IFNy+	Malignant	GBP1, HLA-DRA, CIITA
-IFNy-	Malignant	
+IFNy+	Malignant	GBP1, IRF1
+IFNy-	Malignant	PMEL
