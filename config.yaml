@@ -61,7 +61,7 @@ celltype:
 gene-vs-gene-plots:
   all-malignant:
     # uncomment below to perform a correlation of given type (pearson, spearman, ...)
-    correlation: pearson
+    correlation: spearman
     # uncomment below to perform a regression with given formula
     # regression: "y ~ x"
     pairs:
