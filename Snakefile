@@ -28,6 +28,7 @@ targets_qc = [
     "plots/explained-variance.pdf"
 ]
 
+seeds = [23213, 789789, 897354]
 
 ######## target rules ##############
 
@@ -46,11 +47,15 @@ rule all:
                covariate=cells.columns[1:]),
         expand("plots/hvg-tsne.{covariate}.seed={seed}.pdf",
                covariate=cells.columns[1:],
-               seed=[23213, 789789, 897354]),
+               seed=seeds),
         expand("plots/cellassign.{parent}.pdf",
                parent=markers["parent"].unique()),
-        expand("plots/celltype-tsne.seed={seed}.pdf",
-               seed=[23213, 789789, 897354]),
+        expand("plots/celltype-tsne.{parent}.seed={seed}.pdf",
+               seed=seeds,
+               parent=markers["parent"].unique()),
+        expand("plots/gene-tsne/{gene}.tsne.seed={seed}.pdf",
+               seed=seeds,
+               gene=config["celltype"]["expression-plot-genes"]),
         expand(["tables/diffexp.{test}.tsv",
                 "plots/diffexp.{test}.bcv.pdf",
                 "plots/diffexp.{test}.md.pdf",

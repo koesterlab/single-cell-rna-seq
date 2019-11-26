@@ -45,13 +45,14 @@ rule celltype_tsne:
         sce="analysis/normalized.batch-removed.rds",
         fits=expand("analysis/cellassign.{parent}.rds", parent=markers["parent"].unique())
     output:
-        report("plots/celltype-tsne.seed={seed}.pdf",
+        report("plots/celltype-tsne.{parent}.seed={seed}.pdf",
                    caption="../report/celltype-tsne.rst",
                    category="Dimension Reduction")
     params:
-        min_gamma=config["celltype"]["min_gamma"]
+        min_gamma=config["celltype"]["min_gamma"],
+        parents=markers["parent"].unique()
     log:
-        "logs/celltype-tsne/seed={seed}.log"
+        "logs/celltype-tsne/{parent}.seed={seed}.log"
     conda:
         "../envs/eval.yaml"
     wildcard_constraints:

@@ -80,3 +80,20 @@ rule gene_vs_gene:
         "../envs/eval.yaml"
     script:
         "../scripts/plot-gene-gene-expression.R"
+
+
+rule gene_tsne:
+    input:
+        sce="analysis/normalized.batch-removed.rds"
+    output:
+        report("plots/gene-tsne/{gene}.tsne.seed={seed}.pdf",
+               caption="../report/gene-tsne.rst",
+               category="Dimension Reduction")
+    log:
+        "logs/gene-tsne/{gene}.seed={seed}.log"
+    conda:
+        "../envs/eval.yaml"
+    wildcard_constraints:
+        seed="[0-9]+"
+    script:
+        "../scripts/gene-tsne.R"

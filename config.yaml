@@ -57,6 +57,12 @@ celltype:
     - MITF
     - PMEL
     - TYR
+    - CD74
+    - GBP3
+    - MLANA
+    - HMGCS1
+    - DHCR7
+    - FASN
 
 gene-vs-gene-plots:
   all-malignant:
@@ -103,7 +109,8 @@ gene-vs-gene-plots:
         - PSMB9
         - PSMB8
     constrain-celltypes:
-      - Malignant
+      - IFNy+
+      - IFNy-
 
 diffexp:
   IFNy+-vs-IFNy-:

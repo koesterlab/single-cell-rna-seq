@@ -60,6 +60,7 @@ for(i in 1:nrow(markers)) {
 marker_mat <- t(marker_mat)
 marker_mat <- marker_mat[rownames(marker_mat) %in% rownames(sce),, drop=FALSE]
 
+
 # apply cellAssign
 sce <- sce[rownames(marker_mat), ]
 # remove genes with 0 counts in all cells and cells with 0 counts in all genes
