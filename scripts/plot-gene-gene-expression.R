@@ -21,16 +21,17 @@ aes_name <- function(name) {
 }
 
 sce <- readRDS(snakemake@input[["sce"]])
+constrain_celltypes <- snakemake@params[["constrain_celltypes"]]
 
 for(cellassign_fit in snakemake@input[["fits"]]) {
     cellassign_fit <- readRDS(cellassign_fit)
-    sce <- assign_celltypes(cellassign_fit, sce, snakemake@params[["min_gamma"]])
+    sce <- assign_celltypes(cellassign_fit, sce, snakemake@params[["min_gamma"]], constrain_celltypes)
 }
 
 # handle constrain celltypes
-constrain_celltypes <- snakemake@params[["constrain_celltypes"]]
 if(!is.null(constrain_celltypes)) {
     celltypes <- constrain_celltypes
+    print(celltypes)
     sce <- sce[, colData(sce)$celltype %in% celltypes]
 }
 
